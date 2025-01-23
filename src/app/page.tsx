@@ -1,7 +1,5 @@
-import React from "react";
+import { ModeToggle } from "@/components/theme-toogler";
 
-const page = () => {
-  return <div>Hello World</div>;
-};
-
-export default page;
+export default function Home() {
+  return <ModeToggle />;
+}
