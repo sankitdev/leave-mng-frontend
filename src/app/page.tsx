@@ -1,5 +1,5 @@
-import { ModeToggle } from "@/components/theme-toogler";
+import LoginPage from "./login/page";
 
 export default function Home() {
-  return <ModeToggle />;
+  return <LoginPage />;
 }
