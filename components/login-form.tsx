@@ -30,7 +30,6 @@ export function LoginForm({
   } = useForm<LoginFormInputs>();
   const router = useRouter();
   const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
-    console.log(data);
     loginUser(data, router);
   };
 
