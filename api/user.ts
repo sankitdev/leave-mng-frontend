@@ -16,3 +16,11 @@ export async function loginUser(
     console.error("Error:", error);
   }
 }
+
+export async function logoutUser() {
+  try {
+    await axiosInstance.post("/logout", {});
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
