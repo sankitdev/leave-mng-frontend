@@ -16,8 +16,7 @@ import { useRouter } from "next/navigation";
 export function UserNav() {
   const router = useRouter();
   const handleLogout = () => {
-    logoutUser();
-    router.push("/");
+    logoutUser(router);
   };
   return (
     <DropdownMenu>

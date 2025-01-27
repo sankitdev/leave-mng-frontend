@@ -12,9 +12,10 @@ export async function loginUser(
     const response = await axiosInstance.post("/login", { email, password });
     console.log(response.data);
     if (response.status === 200) {
-      const { id, role } = response.data.userData;
+      const { id, role, name, email, image, department } =
+        response.data.userData;
       const { login } = useAuthStore.getState();
-      login({ id, role });
+      login({ id, role, name, email, image, department });
       router.push("/dashboard");
     }
   } catch (error) {
@@ -22,9 +23,14 @@ export async function loginUser(
   }
 }
 
-export async function logoutUser() {
+export async function logoutUser(router: ReturnType<typeof useRouter>) {
   try {
-    await axiosInstance.post("/logout", {});
+    const response = await axiosInstance.post("/logout", {});
+    if (response.status === 200) {
+      const { logout } = useAuthStore.getState();
+      logout();
+      router.push("/");
+    }
   } catch (error) {
     console.error("Error:", error);
   }
