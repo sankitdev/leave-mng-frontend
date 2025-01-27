@@ -25,17 +25,17 @@ const items = [
   },
   {
     title: "HODs",
-    url: "#",
+    url: "/dashboard/hod",
     icon: Users,
   },
   {
     title: "Staff",
-    url: "#",
+    url: "/dashboard/staff",
     icon: Users,
   },
   {
     title: "Students",
-    url: "#",
+    url: "/dashboard/student",
     icon: Users,
   },
 ];
