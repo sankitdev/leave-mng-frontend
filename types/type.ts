@@ -3,7 +3,7 @@ export interface AuthState {
   role: string | null;
   name: string | null;
   email: string | null;
-  image: string | null;
+  image: string | undefined;
   department: string | null;
   login: (userData: {
     id: string;
@@ -21,6 +21,6 @@ export const defaultAuthState: Omit<AuthState, "login" | "logout"> = {
   role: null,
   name: null,
   email: null,
-  image: null,
+  image: undefined,
   department: null,
 };
