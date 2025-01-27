@@ -1,31 +1,28 @@
+import { AuthState, defaultAuthState } from "@/types/type";
 import { create } from "zustand";
 import { persist, devtools } from "zustand/middleware";
-
-interface AuthState {
-  userId: string | null;
-  role: string | null;
-  login: (userData: { id: string; role: string }) => void;
-  logout: () => void;
-}
 
 const useAuthStore = create<AuthState>()(
   devtools(
     persist(
       (set) => ({
-        userId: null,
-        role: null,
-        login: (userData) =>
+        ...defaultAuthState,
+        login: (userData) => {
+          set({ ...defaultAuthState, ...userData });
+        },
+        logout: () =>
           set({
-            userId: userData.id,
-            role: userData.role,
+            ...defaultAuthState,
           }),
-        logout: () => set({ userId: null, role: null }),
       }),
       {
         name: "auth-storage",
         partialize: (state) => ({
-          userId: state.userId,
+          id: state.id,
           role: state.role,
+          name: state.name,
+          email: state.email,
+          image: state.image,
         }),
       }
     ),
