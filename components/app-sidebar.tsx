@@ -1,5 +1,3 @@
-import { Calendar, Home, Users } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -10,35 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "/dashboard",
-    icon: Home,
-  },
-  {
-    title: "Calendar",
-    url: "/dashboard/calender",
-    icon: Calendar,
-  },
-  {
-    title: "HODs",
-    url: "/dashboard/hod",
-    icon: Users,
-  },
-  {
-    title: "Staff",
-    url: "/dashboard/staff",
-    icon: Users,
-  },
-  {
-    title: "Students",
-    url: "/dashboard/student",
-    icon: Users,
-  },
-];
+import { dashBoardItems } from "@/constants/menuItems";
 
 export function AppSidebar() {
   return (
@@ -48,7 +18,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>Leave Management</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {dashBoardItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
