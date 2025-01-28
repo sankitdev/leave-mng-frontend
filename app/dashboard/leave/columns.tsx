@@ -11,16 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DataTableColumnHeader } from "./columnHide";
-export interface LeaveData {
-  leaveType: string;
-  from: string;
-  to: string;
-  days: number;
-  reason: string;
-  approvedBy: string;
-  status: "Approved" | "Rejected" | "Pending";
-}
+// import { DataTableColumnHeader } from "./columnHide";
+import { LeaveData } from "@/types/type";
 
 export const columns: ColumnDef<LeaveData>[] = [
   {
@@ -34,12 +26,6 @@ export const columns: ColumnDef<LeaveData>[] = [
   {
     accessorKey: "to",
     header: "To",
-  },
-  {
-    accessorKey: "days",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Days" />
-    ),
   },
   {
     accessorKey: "reason",

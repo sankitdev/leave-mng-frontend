@@ -13,11 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginUser } from "@/api/user";
 import { useRouter } from "next/navigation";
-
-export type LoginFormInputs = {
-  email: string;
-  password: string;
-};
+import { LoginFormInputs } from "@/types/type";
 
 export function LoginForm({
   className,
