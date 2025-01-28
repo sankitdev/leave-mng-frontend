@@ -1,5 +1,5 @@
 import axiosInstance from "./axiosInstance";
-import { useRouter } from "next/navigation";
+import type { useRouter } from "next/navigation";
 import useAuthStore from "@/store/auth.store";
 import { LoginFormInputs } from "@/types/type";
 
@@ -31,12 +31,13 @@ export async function studentLeaveDataByDepartment(department: string) {
   }
 }
 
-export async function studentLeaveData(userId: string) {
+export async function studentLeaveData() {
   try {
-    const response = await axiosInstance.get(`/leave-data/${userId}`);
+    const response = await axiosInstance.get(`/leave-data`);
+    console.log(response);
     return response.data.leaves || [];
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error :", error);
   }
 }
 
