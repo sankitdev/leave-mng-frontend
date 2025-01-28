@@ -1,8 +1,27 @@
 "use client";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import { useEffect, useState } from "react";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { studentLeaveData } from "@/api/user";
+import { Leave } from "@/types/type";
 
 export default function Calendar() {
+  const { department } = useUserProfile();
+  const [leaves, setLeaves] = useState<Leave[]>([]);
+
+  useEffect(() => {
+    const fetchLeaveData = async () => {
+      if (department) {
+        const leaveData = await studentLeaveData(department);
+        console.log(leaveData);
+        setLeaves(leaveData || []); // Set leaves data if it's fetched
+      }
+    };
+
+    fetchLeaveData();
+  }, [department]);
+
   return (
     <div className="w-full md:w-[80%] md:h-[90%] mx-auto py-4 shadow-lg rounded-lg">
       <h1 className="text-2xl font-bold text-center mb-6">Leave Calendar</h1>
@@ -10,10 +29,11 @@ export default function Calendar() {
         <FullCalendar
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
-          events={[
-            { title: "Event 1", start: "2025-01-25", end: "2025-01-29" },
-            { title: "Event 2", date: "2025-01-28" },
-          ]}
+          events={leaves.map((leave) => ({
+            title: leave.studentName,
+            start: leave.startDate,
+            end: leave.endDate,
+          }))}
           height="auto"
         />
       </div>
