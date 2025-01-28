@@ -24,3 +24,23 @@ export const defaultAuthState: Omit<AuthState, "login" | "logout"> = {
   image: undefined,
   department: null,
 };
+export type LoginFormInputs = {
+  email: string;
+  password: string;
+};
+
+export interface LeaveData {
+  leaveType: string;
+  from: string;
+  to: string;
+  days: number;
+  reason: string;
+  approvedBy: string;
+  status: "Approved" | "Rejected" | "Pending";
+}
+
+export interface Leave {
+  startDate: string; // or Date, if you prefer to work with Date objects
+  endDate: string; // or Date
+  studentName: string;
+}

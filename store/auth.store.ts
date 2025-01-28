@@ -23,6 +23,7 @@ const useAuthStore = create<AuthState>()(
           name: state.name,
           email: state.email,
           image: state.image,
+          department: state.department,
         }),
       }
     ),
