@@ -3,7 +3,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { useEffect, useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { studentLeaveData } from "@/api/user";
+import { getLeavesByDepartment } from "@/api/user";
 import { Leave } from "@/types/type";
 
 export default function Calendar() {
@@ -13,7 +13,7 @@ export default function Calendar() {
   useEffect(() => {
     const fetchLeaveData = async () => {
       if (department) {
-        const leaveData = await studentLeaveData(department);
+        const leaveData = await getLeavesByDepartment(department);
         console.log(leaveData);
         setLeaves(leaveData || []); // Set leaves data if it's fetched
       }

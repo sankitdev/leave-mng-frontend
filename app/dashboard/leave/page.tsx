@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { studentLeaveData } from "@/api/user";
+import { getPersonalLeaveRequests } from "@/api/user";
 import { LeaveData } from "@/types/type";
 
 export default function LeaveTable() {
@@ -12,7 +12,7 @@ export default function LeaveTable() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await studentLeaveData();
+        const data = await getPersonalLeaveRequests();
         setLeaves(data);
       } catch (err) {
         console.error("Error fetching leave data:", err);
@@ -28,7 +28,7 @@ export default function LeaveTable() {
 
   return (
     <div className="py-2 shadow-lg rounded-2xl">
-      <DataTable columns={columns} data={leaves} /> {/* Render fetched data */}
+      <DataTable columns={columns} data={leaves} />
     </div>
   );
 }

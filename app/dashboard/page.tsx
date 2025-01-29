@@ -3,17 +3,15 @@ import PageContainer from "@/components/page-container";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
 import LeaveTable from "./leave/page";
-import { studentLeaveUse } from "@/api/user";
+import { getLeaveBalance } from "@/api/user";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { UsedLeaveData } from "@/types/type";
-
-// Define the type for leave data
+import { LeaveBalance } from "@/types/type";
 
 export default function OverViewLayout() {
-  const [leave, setLeave] = useState<UsedLeaveData | null>(null); // Type the state
+  const [leave, setLeave] = useState<LeaveBalance | null>(null); // Type the state
   const { name } = useUserProfile();
   const fetchData = async () => {
-    const response = await studentLeaveUse();
+    const response = await getLeaveBalance();
     setLeave(response);
   };
 
@@ -30,7 +28,7 @@ export default function OverViewLayout() {
     },
     {
       count: leave.availableLeave,
-      label: "Total Available Leaves",
+      label: "Available Leaves",
     },
     {
       count: leave.usedLeave,
@@ -38,7 +36,7 @@ export default function OverViewLayout() {
     },
     {
       count: leave.attendance,
-      label: "Total Attendance",
+      label: "Attendance Percentage",
     },
   ];
 
