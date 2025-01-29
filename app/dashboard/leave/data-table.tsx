@@ -15,9 +15,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { DataTablePagination } from "./pagination";
-import { DataTableViewOptions } from "./column-toggle";
-import { Button } from "@/components/ui/button";
+import { DataTablePagination } from "../../../components/table/pagination";
+import { DataTableViewOptions } from "../../../components/table/column-toggle";
+import { ApplyLeaveButton } from "@/components/leaveform/apply-leave-button";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,7 +40,7 @@ export function DataTable<TData, TValue>({
         <h2 className="text-xl font-semibold">Leave</h2>
         <div className="flex gap-5">
           <DataTableViewOptions table={table} />
-          <Button>Apply Leave</Button>
+          <ApplyLeaveButton />
         </div>
       </div>
 
