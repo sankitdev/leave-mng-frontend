@@ -1,20 +1,34 @@
-import { DataTable } from "./data-table"; // Your data table component
-import { columns } from "./columns"; // Your column definitions
+"use client";
+import { useEffect, useState } from "react";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 import { studentLeaveData } from "@/api/user";
 import { LeaveData } from "@/types/type";
 
-export default async function LeaveTable() {
-  try {
-    console.log("Something");
-    const leaves: LeaveData[] = await studentLeaveData(); // Fetch leaves on the server
-    return (
-      <div className="py-2 shadow-lg rounded-2xl">
-        <DataTable columns={columns} data={leaves} />{" "}
-        {/* Render fetched data */}
-      </div>
-    );
-  } catch (error) {
-    console.error("Error fetching leave data:", error);
-    return <div>Error fetching data</div>;
+export default function LeaveTable() {
+  const [leaves, setLeaves] = useState<LeaveData[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await studentLeaveData();
+        setLeaves(data);
+      } catch (err) {
+        console.error("Error fetching leave data:", err);
+        setError("Error fetching data");
+      }
+    };
+    fetchData();
+  }, []);
+
+  if (error) {
+    return <div>{error}</div>;
   }
+
+  return (
+    <div className="py-2 shadow-lg rounded-2xl">
+      <DataTable columns={columns} data={leaves} /> {/* Render fetched data */}
+    </div>
+  );
 }
