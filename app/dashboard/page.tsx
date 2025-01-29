@@ -1,45 +1,65 @@
+"use client";
 import PageContainer from "@/components/page-container";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LeaveTable from "./leave/page";
+import { studentLeaveUse } from "@/api/user";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { UsedLeaveData } from "@/types/type";
+
+// Define the type for leave data
 
 export default function OverViewLayout() {
-  const leave = [
+  const [leave, setLeave] = useState<UsedLeaveData | null>(null); // Type the state
+  const { name } = useUserProfile();
+  const fetchData = async () => {
+    const response = await studentLeaveUse();
+    setLeave(response);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (!leave) return <div>Loading...</div>;
+
+  const leaveData = [
     {
-      count: 28,
+      count: leave.totalLeave,
+      label: "Total Leaves",
+    },
+    {
+      count: leave.availableLeave,
       label: "Total Available Leaves",
     },
     {
-      count: 8,
-      label: "Total Sick Leaves",
+      count: leave.usedLeave,
+      label: "Total Used Leaves",
     },
     {
-      count: 14,
-      label: "Total Casual Leaves",
-    },
-    {
-      count: 6,
-      label: "Total Paid Earned Leaves",
+      count: leave.attendance,
+      label: "Total Attendance",
     },
   ];
+
   return (
     <PageContainer>
       <div className="flex flex-1 flex-col space-y-2">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-2xl font-bold tracking-tight">
-            Hi, Welcome back 👋
+            Hi, Welcome back {name} 👋
           </h2>
         </div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {leave.map((leave, index) => (
+          {leaveData.map((leaveItem, index) => (
             <Card key={index} className="w-full">
               <CardHeader>
-                <CardTitle className={`text-4xl font-bold`}>
-                  {leave.count}
+                <CardTitle className="text-4xl font-bold">
+                  {leaveItem.count}
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-lg font-medium">{leave.label}</p>
+                <p className="text-lg font-medium">{leaveItem.label}</p>
               </CardContent>
             </Card>
           ))}

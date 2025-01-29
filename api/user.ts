@@ -34,10 +34,18 @@ export async function studentLeaveDataByDepartment(department: string) {
 export async function studentLeaveData() {
   try {
     const response = await axiosInstance.get(`/leave-data`);
-    console.log(response);
-    return response.data.leaves || [];
+    return response.data.leaves;
   } catch (error) {
     console.error("Error :", error);
+  }
+}
+
+export async function studentLeaveUse() {
+  try {
+    const response = await axiosInstance.get("/user-leaveData");
+    return response.data;
+  } catch (error) {
+    console.error("Error", error);
   }
 }
 
