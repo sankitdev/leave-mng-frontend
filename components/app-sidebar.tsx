@@ -1,3 +1,4 @@
+"use client";
 import {
   Sidebar,
   SidebarContent,
@@ -9,8 +10,13 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { dashBoardItems } from "@/constants/menuItems";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 export function AppSidebar() {
+  const { role } = useUserProfile();
+  const filteredItem = dashBoardItems.filter((item) =>
+    item.roles.includes(role!)
+  );
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -18,7 +24,7 @@ export function AppSidebar() {
           <SidebarGroupLabel>Leave Management</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {dashBoardItems.map((item) => (
+              {filteredItem.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a href={item.url}>
