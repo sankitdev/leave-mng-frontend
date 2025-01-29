@@ -21,9 +21,9 @@ export async function loginUser(
     console.error("Error:", error);
   }
 }
-export async function studentLeaveDataByDepartment(department: string) {
+export async function getLeavesByDepartment(department: string) {
   try {
-    const response = await axiosInstance.get(`/leaveData/${department}`);
+    const response = await axiosInstance.get(`/leaves/${department}`);
     const leaves = response.data.leaves || [];
     return leaves;
   } catch (error) {
@@ -31,18 +31,18 @@ export async function studentLeaveDataByDepartment(department: string) {
   }
 }
 
-export async function studentLeaveData() {
+export async function getPersonalLeaveRequests() {
   try {
-    const response = await axiosInstance.get(`/leave-data`);
+    const response = await axiosInstance.get("/leaves/requests");
     return response.data.leaves;
   } catch (error) {
     console.error("Error :", error);
   }
 }
 
-export async function studentLeaveUse() {
+export async function getLeaveBalance() {
   try {
-    const response = await axiosInstance.get("/user-leaveData");
+    const response = await axiosInstance.get("/leaves/balance");
     return response.data;
   } catch (error) {
     console.error("Error", error);
