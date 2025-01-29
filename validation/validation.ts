@@ -16,3 +16,23 @@ export const formSchema = z.object({
   department: departmentEnum,
   roleId: z.number().optional(),
 });
+export const leaveFormSchema = z.object({
+  startDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
+  endDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Use YYYY-MM-DD"),
+  requestToId: z.string({
+    required_error: "Teacher is required",
+  }),
+  leaveType: z.enum(["Full Day", "Half Day"], {
+    required_error: "Leave type is required",
+  }),
+  reason: z
+    .string()
+    .min(1, "Reason is required")
+    .max(500, "Reason must be less than 500 characters"),
+});
+
+export type LeaveFormValues = z.infer<typeof leaveFormSchema>;

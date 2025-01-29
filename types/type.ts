@@ -39,8 +39,23 @@ export interface LeaveData {
   status: "Approved" | "Rejected" | "Pending";
 }
 
+export interface UserData {
+  image: string;
+  name: string;
+  gender: "male" | "female";
+  department: "cs" | "mechanical";
+  phone: string;
+}
+
 export interface Leave {
-  startDate: string; // or Date, if you prefer to work with Date objects
-  endDate: string; // or Date
+  startDate: string;
+  endDate: string;
   studentName: string;
+}
+
+export interface LeaveBalance {
+  totalLeave: number;
+  availableLeave: number;
+  usedLeave: number;
+  attendance: number;
 }
