@@ -2,7 +2,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "@radix-ui/react-icons";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
+
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -28,10 +29,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+
 import {
   leaveFormSchema,
   type LeaveFormValues,
 } from "../../validation/validation";
+import { useEffect, useState } from "react";
+import { applyLeave, getTeachers } from "@/api/user";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { Teachers } from "@/types/type";
 
 export function LeaveApplicationForm({ onClose }: { onClose: () => void }) {
   const form = useForm<LeaveFormValues>({
@@ -40,19 +46,37 @@ export function LeaveApplicationForm({ onClose }: { onClose: () => void }) {
       startDate: format(new Date(), "yyyy-MM-dd"),
       endDate: format(new Date(), "yyyy-MM-dd"),
       leaveType: "Full Day",
-      reason: "",
+      reason: "No feeling well",
     },
   });
+  const [teachers, setTeachers] = useState<Teachers[]>([]);
+  const { department } = useUserProfile();
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchTeacher = async () => {
+      try {
+        if (!department) return;
+
+        const data = await getTeachers(department);
+        if (isMounted) setTeachers(data);
+      } catch (error) {
+        console.error("Error fetching teachers:", error);
+      }
+    };
+
+    fetchTeacher();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [department]);
 
   function onSubmit(data: LeaveFormValues) {
-    console.log(data);
-    // Here you would typically send the data to your backend
+    applyLeave(data);
     onClose();
   }
-  const teachers = [
-    { id: "909f8556-81e8-4269-aa5e-7d4ee7b81a4a", name: "John Doe" },
-    { id: "7c8f8d6e-b13e-4e31-9d4a-6e2b9e5b9f3d", name: "Jane Smith" },
-  ];
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -73,7 +97,7 @@ export function LeaveApplicationForm({ onClose }: { onClose: () => void }) {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(new Date(field.value), "PPP")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -84,8 +108,10 @@ export function LeaveApplicationForm({ onClose }: { onClose: () => void }) {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={parse(field.value, "yyyy-MM-dd", new Date())}
-                    onSelect={field.onChange}
+                    selected={new Date(field.value)}
+                    onSelect={(date) =>
+                      field.onChange(date ? format(date, "yyyy-MM-dd") : "")
+                    }
                     disabled={(date) =>
                       date < new Date() || date < new Date("1900-01-01")
                     }
@@ -114,7 +140,7 @@ export function LeaveApplicationForm({ onClose }: { onClose: () => void }) {
                       )}
                     >
                       {field.value ? (
-                        format(field.value, "PPP")
+                        format(new Date(field.value), "PPP")
                       ) : (
                         <span>Pick a date</span>
                       )}
@@ -125,8 +151,10 @@ export function LeaveApplicationForm({ onClose }: { onClose: () => void }) {
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
                     mode="single"
-                    selected={parse(field.value, "yyyy-MM-dd", new Date())}
-                    onSelect={field.onChange}
+                    selected={new Date(field.value)}
+                    onSelect={(date) =>
+                      field.onChange(date ? format(date, "yyyy-MM-dd") : "")
+                    }
                     disabled={(date) =>
                       date < new Date() || date < new Date("1900-01-01")
                     }
