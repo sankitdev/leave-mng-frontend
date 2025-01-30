@@ -1,17 +1,24 @@
 "use client";
-import { RegisterUserDialog } from "@/components/register-user-dialog";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
-export default function Page() {
-  const [isOpen, setIsOpen] = useState(false);
-  const handleRegsiter = () => {
-    setIsOpen(true);
-  };
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
+import type { UserData } from "@/types/type";
+import { useEffect, useState } from "react";
+import { getUsers } from "@/api/user";
+
+export default function UserTable() {
+  const [users, setUsers] = useState<UserData[]>([]);
+  useEffect(() => {
+    const fetch = async () => {
+      const data = await getUsers("student");
+      setUsers(data);
+    };
+    fetch();
+  }, []);
+
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <Button onClick={handleRegsiter}>Register</Button>
-      <RegisterUserDialog isOpen={isOpen} onOpenChange={setIsOpen} />
+    <div className="container mx-auto py-10">
+      <DataTable columns={columns} data={users} />
     </div>
   );
 }
