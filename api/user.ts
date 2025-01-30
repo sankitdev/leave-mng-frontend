@@ -1,7 +1,8 @@
 import axiosInstance from "./axiosInstance";
 import type { useRouter } from "next/navigation";
 import useAuthStore from "@/store/auth.store";
-import { LoginFormInputs } from "@/types/type";
+import { LoginFormInputs, UpdateLeave } from "@/types/type";
+import { LeaveFormValues } from "@/validation/validation";
 
 export async function loginUser(
   userData: LoginFormInputs,
@@ -30,7 +31,6 @@ export async function getLeavesByDepartment(department: string) {
     console.error("Error:", error);
   }
 }
-
 export async function getPersonalLeaveRequests() {
   try {
     const response = await axiosInstance.get("/leaves/requests");
@@ -39,7 +39,6 @@ export async function getPersonalLeaveRequests() {
     console.error("Error :", error);
   }
 }
-
 export async function getLeaveBalance() {
   try {
     const response = await axiosInstance.get("/leaves/balance");
@@ -48,7 +47,30 @@ export async function getLeaveBalance() {
     console.error("Error", error);
   }
 }
-
+export async function getDashBoard() {
+  try {
+    const response = await axiosInstance.get("/dashboard");
+    return response.data;
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+export async function getTeachers(department: string | null) {
+  try {
+    const response = await axiosInstance.get(`/staff/${department}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+export async function getAllLeaveRequests() {
+  try {
+    const response = await axiosInstance.get("/leaves");
+    return response.data.leaves;
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
 export async function logoutUser(router: ReturnType<typeof useRouter>) {
   try {
     const response = await axiosInstance.post("/logout", {});
@@ -59,5 +81,30 @@ export async function logoutUser(router: ReturnType<typeof useRouter>) {
     }
   } catch (error) {
     console.error("Error:", error);
+  }
+}
+export async function applyLeave(data: LeaveFormValues) {
+  try {
+    const response = await axiosInstance.post("/apply-leave", { ...data });
+    if (response.status === 200) {
+      console.log("leave Applied");
+    }
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+export async function updateLeave(leaveId: string, update: UpdateLeave) {
+  try {
+    await axiosInstance.patch(`/leave-request/${leaveId}/update`, update);
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+export async function getUsers(role: string) {
+  try {
+    const response = await axiosInstance.get(`/users/${role}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error", error);
   }
 }

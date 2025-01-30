@@ -51,7 +51,6 @@ export default function OverViewLayout() {
         <h2 className="text-2xl font-bold tracking-tight">
           Hi, Welcome back {name} 👋
         </h2>
-
         {/* Role-based UI Rendering */}
         {role === "student" && <StudentDashboard data={data as LeaveBalance} />}
         {role === "staff" && <StaffDashboard data={data as Staff} />}

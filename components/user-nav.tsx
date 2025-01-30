@@ -9,7 +9,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -25,7 +24,7 @@ export function UserNav() {
   const handleProfileClick = () => {
     setIsOpen(true);
   };
-  const { name, email, role, image, isStudent } = useUserProfile();
+  const { name, email, role, image } = useUserProfile();
   return (
     <>
       <DropdownMenu>
@@ -52,9 +51,7 @@ export function UserNav() {
           <DropdownMenuGroup>
             <DropdownMenuItem onSelect={handleProfileClick}>
               Profile
-              <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
             </DropdownMenuItem>
-            {isStudent ? "" : <DropdownMenuItem>New Team</DropdownMenuItem>}
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>

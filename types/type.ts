@@ -36,17 +36,19 @@ export interface LeaveData {
   days: number;
   reason: string;
   approvedBy: string;
-  status: "Approved" | "Rejected" | "Pending";
+  status: "approved" | "rejected" | "pending";
 }
-
 export interface UserData {
+  id?: string;
   image: string;
   name: string;
   gender: "male" | "female";
   department: "cs" | "mechanical";
   phone: string;
 }
-
+export interface UpdateLeave {
+  status: "approved" | "rejected";
+}
 export interface Leave {
   startDate: string;
   endDate: string;
@@ -59,3 +61,12 @@ export interface LeaveBalance {
   usedLeave: number;
   attendance: number;
 }
+export interface Teachers {
+  id: string;
+  name: string;
+}
+export type Staff = {
+  pendingRequests: number;
+  approvedRequests: number;
+  rejectedRequests: number;
+};
