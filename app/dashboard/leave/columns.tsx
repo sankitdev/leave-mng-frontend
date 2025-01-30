@@ -52,11 +52,23 @@ export const columns: ColumnDef<LeaveData>[] = [
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>Copy payment ID</DropdownMenuItem>
-            <DropdownMenuSeparator />
-          </DropdownMenuContent>
+          {leaveTable.status === "pending" ? (
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+              <DropdownMenuItem onClick={() => console.log("Approved")}>
+                Approve
+              </DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => console.log("Reject")}>
+                Reject
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+            </DropdownMenuContent>
+          ) : (
+            ""
+          )}
         </DropdownMenu>
       );
     },
