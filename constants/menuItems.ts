@@ -5,7 +5,7 @@ export const dashBoardItems = [
     title: "Home",
     url: "/dashboard",
     icon: Home,
-    roles: ["student"],
+    roles: ["admin", "hod", "staff", "student"],
   },
   {
     title: "Calendar",
