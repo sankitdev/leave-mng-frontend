@@ -13,17 +13,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { RegisterUserDialog } from "./register-user-dialog";
+import { UpdateProfileButton } from "./profile/profile-button";
+// import { useState } from "react";
+// import { RegisterUserDialog } from "./register-user-dialog";
 export function UserNav() {
-  const [isOpen, setIsOpen] = useState(false);
+  // const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const handleLogout = () => {
     logoutUser(router);
   };
-  const handleProfileClick = () => {
-    setIsOpen(true);
-  };
+  // const handleProfileClick = () => {
+  //   setIsOpen(true);
+  // };
   const { name, email, role, image } = useUserProfile();
   return (
     <>
@@ -49,15 +50,17 @@ export function UserNav() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onSelect={handleProfileClick}>
+            {/* <DropdownMenuItem onSelect={handleProfileClick}>
               Profile
-            </DropdownMenuItem>
+            </DropdownMenuItem> */}
+
+            <UpdateProfileButton />
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <RegisterUserDialog isOpen={isOpen} onOpenChange={setIsOpen} />
+      {/* <RegisterUserDialog isOpen={isOpen} onOpenChange={setIsOpen} /> */}
     </>
   );
 }

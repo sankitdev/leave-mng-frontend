@@ -1,8 +1,8 @@
 export interface AuthState {
   id: string | null;
   role: string | null;
-  name: string | null;
-  email: string | null;
+  name: string | undefined;
+  email: string | undefined;
   image: string | undefined;
   department: string | null;
   login: (userData: {
@@ -19,8 +19,8 @@ export interface AuthState {
 export const defaultAuthState: Omit<AuthState, "login" | "logout"> = {
   id: null,
   role: null,
-  name: null,
-  email: null,
+  name: undefined,
+  email: undefined,
   image: undefined,
   department: null,
 };
@@ -30,6 +30,9 @@ export type LoginFormInputs = {
 };
 
 export interface LeaveData {
+  image: string;
+  studentName: string;
+  leaveId?: string;
   leaveType: string;
   from: string;
   to: string;
@@ -42,7 +45,7 @@ export interface UserData {
   id?: string;
   image: string;
   name: string;
-  gender: "male" | "female";
+  gender?: "male" | "female";
   department: "cs" | "mechanical";
   phone: string;
 }
