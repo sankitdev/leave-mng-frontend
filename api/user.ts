@@ -1,7 +1,7 @@
 import axiosInstance from "./axiosInstance";
 import type { useRouter } from "next/navigation";
 import useAuthStore from "@/store/auth.store";
-import { LoginFormInputs, UpdateLeave } from "@/types/type";
+import { LoginFormInputs, UpdateLeave, UserData } from "@/types/type";
 import { LeaveFormValues } from "@/validation/validation";
 
 export async function loginUser(
@@ -103,6 +103,15 @@ export async function updateLeave(leaveId: string, update: UpdateLeave) {
 export async function getUsers(role: string) {
   try {
     const response = await axiosInstance.get(`/users/${role}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
+export async function updateProfile(data: UserData) {
+  try {
+    const response = await axiosInstance.patch("/update-profile", data);
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error", error);
