@@ -1,68 +1,63 @@
 "use client";
 import PageContainer from "@/components/page-container";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import React, { useEffect, useState } from "react";
-import LeaveTable from "./leave/page";
-import { getLeaveBalance } from "@/api/user";
+import { getDashBoard, getLeaveBalance } from "@/api/user";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { LeaveBalance } from "@/types/type";
+import { LeaveBalance, Staff } from "@/types/type";
+import StudentDashboard from "@/components/dashboard/student";
+import StaffDashboard from "@/components/dashboard/staff";
+import HodDashboard from "@/components/dashboard/hod";
+import AdminDashboard from "@/components/dashboard/admin";
+import LeaveTable from "./leave/page";
 
 export default function OverViewLayout() {
-  const [leave, setLeave] = useState<LeaveBalance | null>(null); // Type the state
-  const { name } = useUserProfile();
-  const fetchData = async () => {
-    const response = await getLeaveBalance();
-    setLeave(response);
-  };
+  const [data, setData] = useState(null);
+  const { name, role } = useUserProfile();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    let isMounted = true; // Prevents state updates if unmounted
 
-  if (!leave) return <div>Loading...</div>;
+    const fetchData = async () => {
+      try {
+        let response;
+        if (role === "student") {
+          response = await getLeaveBalance();
+        } else {
+          response = await getDashBoard();
+        }
 
-  const leaveData = [
-    {
-      count: leave.totalLeave,
-      label: "Total Leaves",
-    },
-    {
-      count: leave.availableLeave,
-      label: "Available Leaves",
-    },
-    {
-      count: leave.usedLeave,
-      label: "Total Used Leaves",
-    },
-    {
-      count: leave.attendance,
-      label: "Attendance Percentage",
-    },
-  ];
+        if (isMounted) {
+          setData(response);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (role) {
+      fetchData();
+    }
+
+    return () => {
+      isMounted = false; // Cleanup to avoid setting state if component unmounts
+    };
+  }, [role]);
+
+  if (!data) return <div>Loading...</div>;
 
   return (
     <PageContainer>
       <div className="flex flex-1 flex-col space-y-2">
-        <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight">
-            Hi, Welcome back {name} 👋
-          </h2>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {leaveData.map((leaveItem, index) => (
-            <Card key={index} className="w-full">
-              <CardHeader>
-                <CardTitle className="text-4xl font-bold">
-                  {leaveItem.count}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-lg font-medium">{leaveItem.label}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <LeaveTable />
+        <h2 className="text-2xl font-bold tracking-tight">
+          Hi, Welcome back {name} 👋
+        </h2>
+
+        {/* Role-based UI Rendering */}
+        {role === "student" && <StudentDashboard data={data as LeaveBalance} />}
+        {role === "staff" && <StaffDashboard data={data as Staff} />}
+        {role === "hod" && <HodDashboard data={data as Staff} />}
+        {role === "admin" && <AdminDashboard data={data as Staff} />}
+        <LeaveTable role={role} />
       </div>
     </PageContainer>
   );
