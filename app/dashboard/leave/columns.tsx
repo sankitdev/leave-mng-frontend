@@ -13,8 +13,28 @@ import {
 } from "@/components/ui/dropdown-menu";
 // import { DataTableColumnHeader } from "./columnHide";
 import { LeaveData } from "@/types/type";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const columns: ColumnDef<LeaveData>[] = [
+  {
+    accessorKey: "image",
+    header: "Image",
+    cell: ({ row }) => (
+      <Avatar>
+        <AvatarImage
+          src={row.getValue("image") as string}
+          alt={`${row.getValue("studentName") as string}'s avatar`}
+        />
+        <AvatarFallback>
+          {((row.getValue("studentName") as string) || "").charAt(0)}
+        </AvatarFallback>
+      </Avatar>
+    ),
+  },
+  {
+    accessorKey: "studentName",
+    header: "Name",
+  },
   {
     accessorKey: "leaveType",
     header: "Leave Type",
@@ -43,7 +63,6 @@ export const columns: ColumnDef<LeaveData>[] = [
     id: "actions",
     cell: ({ row }) => {
       const leaveTable = row.original;
-      console.log(leaveTable);
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -52,15 +71,15 @@ export const columns: ColumnDef<LeaveData>[] = [
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          {leaveTable.status === "pending" ? (
+          {/* {leaveTable.status === "pending" ? (
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-              <DropdownMenuItem onClick={() => console.log("Approved")}>
+              <DropdownMenuItem onClick={(leaveTable)}>
                 Approve
               </DropdownMenuItem>
 
-              <DropdownMenuItem onClick={() => console.log("Reject")}>
+              <DropdownMenuItem onClick={}>
                 Reject
               </DropdownMenuItem>
 
@@ -68,7 +87,7 @@ export const columns: ColumnDef<LeaveData>[] = [
             </DropdownMenuContent>
           ) : (
             ""
-          )}
+          )} */}
         </DropdownMenu>
       );
     },

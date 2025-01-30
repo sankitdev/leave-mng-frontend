@@ -18,6 +18,7 @@ import {
 import { DataTablePagination } from "../../../components/table/pagination";
 import { DataTableViewOptions } from "../../../components/table/column-toggle";
 import { ApplyLeaveButton } from "@/components/leaveform/apply-leave-button";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,14 +34,14 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-
+  const { role } = useUserProfile();
   return (
     <div className="rounded-md border">
       <div className="flex justify-between items-center px-4 py-2">
         <h2 className="text-xl font-semibold">Leave</h2>
         <div className="flex gap-5">
           <DataTableViewOptions table={table} />
-          <ApplyLeaveButton />
+          {role === "student" ? <ApplyLeaveButton /> : ""}
         </div>
       </div>
 
