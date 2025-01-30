@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/sidebar";
 import { dashBoardItems } from "@/constants/menuItems";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import Link from "next/link";
 
 export function AppSidebar() {
   const { role } = useUserProfile();
@@ -27,10 +28,10 @@ export function AppSidebar() {
               {filteredItem.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
