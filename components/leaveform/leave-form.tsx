@@ -203,8 +203,9 @@ export function LeaveApplicationForm({ onClose }: { onClose: () => void }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
+                  <SelectItem value="First Half">First Half</SelectItem>
+                  <SelectItem value="Second Half">Second Half</SelectItem>
                   <SelectItem value="Full Day">Full Day</SelectItem>
-                  <SelectItem value="Half Day">Half Day</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

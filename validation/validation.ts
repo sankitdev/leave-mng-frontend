@@ -26,7 +26,7 @@ export const leaveFormSchema = z.object({
   requestToId: z.string({
     required_error: "Teacher is required",
   }),
-  leaveType: z.enum(["Full Day", "Half Day"], {
+  leaveType: z.enum(["Full Day", "First Half", "Second Half"], {
     required_error: "Leave type is required",
   }),
   reason: z
