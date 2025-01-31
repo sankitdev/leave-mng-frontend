@@ -4,6 +4,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import type { UserData } from "@/types/type";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { ActionColumn } from "./ActionColumn";
 
 export const columns: ColumnDef<UserData>[] = [
   {
@@ -60,5 +61,9 @@ export const columns: ColumnDef<UserData>[] = [
   {
     accessorKey: "phone",
     header: "Phone",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <ActionColumn updateUser={row.original} />,
   },
 ];
