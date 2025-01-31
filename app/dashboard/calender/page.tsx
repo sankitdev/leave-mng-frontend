@@ -3,24 +3,47 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import { useEffect, useState } from "react";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { getLeavesByDepartment } from "@/api/user";
+import { getAllLeaveRequests, getLeavesByDepartment } from "@/api/user";
 import { Leave } from "@/types/type";
 
 export default function Calendar() {
   const { department } = useUserProfile();
   const [leaves, setLeaves] = useState<Leave[]>([]);
+  const { role } = useUserProfile();
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchLeaveData = async () => {
-      if (department) {
-        const leaveData = await getLeavesByDepartment(department);
-        console.log(leaveData);
-        setLeaves(leaveData || []); // Set leaves data if it's fetched
+    let isMounted = true; // Prevents state updates if unmounted
+
+    const fetchData = async () => {
+      try {
+        let data: Leave[] = [];
+
+        if (role === "student") {
+          data = await getLeavesByDepartment(department!);
+        } else if (role === "staff" || role === "hod") {
+          data = await getAllLeaveRequests();
+        } else if (role === "admin") {
+          data = await getAllLeaveRequests();
+        }
+
+        if (isMounted) setLeaves(data);
+      } catch (err) {
+        console.error("Error fetching leave data:", err);
+        setError("Error fetching data");
       }
     };
 
-    fetchLeaveData();
-  }, [department]);
+    if (role) fetchData();
+
+    return () => {
+      isMounted = false; // Cleanup to prevent state update if unmounted
+    };
+  }, [role, department]);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
 
   return (
     <div className="w-full md:w-[80%] md:h-[90%] mx-auto py-4 shadow-lg rounded-lg">
@@ -31,8 +54,8 @@ export default function Calendar() {
           initialView="dayGridMonth"
           events={leaves.map((leave) => ({
             title: leave.studentName,
-            start: leave.startDate,
-            end: leave.endDate,
+            start: leave.from,
+            end: leave.to,
           }))}
           height="auto"
         />

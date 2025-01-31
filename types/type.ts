@@ -13,10 +13,21 @@ export interface AuthState {
     image?: string;
     department?: string;
   }) => void;
+  updateProfile: (userData: {
+    id: string;
+    role: string;
+    name?: string;
+    email?: string;
+    image?: string;
+    department?: string;
+  }) => void;
   logout: () => void;
 }
 
-export const defaultAuthState: Omit<AuthState, "login" | "logout"> = {
+export const defaultAuthState: Omit<
+  AuthState,
+  "login" | "updateProfile" | "logout"
+> = {
   id: null,
   role: null,
   name: undefined,
@@ -53,8 +64,8 @@ export interface UpdateLeave {
   status: "approved" | "rejected";
 }
 export interface Leave {
-  startDate: string;
-  endDate: string;
+  from: string;
+  to: string;
   studentName: string;
 }
 
