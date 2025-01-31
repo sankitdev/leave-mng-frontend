@@ -8,12 +8,16 @@ const useAuthStore = create<AuthState>()(
       (set) => ({
         ...defaultAuthState,
         login: (userData) => {
-          set({ ...defaultAuthState, ...userData });
+          set(
+            (state) => ({
+              ...state,
+              ...userData,
+            }),
+            false,
+            "login"
+          );
         },
-        logout: () =>
-          set({
-            ...defaultAuthState,
-          }),
+        logout: () => set({ ...defaultAuthState }, false, "logout"),
       }),
       {
         name: "auth-storage",
