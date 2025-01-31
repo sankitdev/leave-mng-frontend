@@ -22,8 +22,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { ScrollArea } from "./ui/scroll-area";
+} from "../ui/form";
+import { ScrollArea } from "../ui/scroll-area";
 
 export function RegisterUserForm({
   onSubmitSuccess,
