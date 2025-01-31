@@ -17,6 +17,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import { DataTableViewOptions } from "@/components/table/column-toggle";
+import { Button } from "@/components/ui/button";
+import { RegisterUserDialog } from "@/components/registerform/register-user-dialog";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -28,7 +32,7 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-
+  const [isOpen, setIsOpen] = useState(false);
   const table = useReactTable({
     data: data ?? [],
     columns,
@@ -39,9 +43,23 @@ export function DataTable<TData, TValue>({
       sorting,
     },
   });
-
+  const handleAdd = () => {
+    setIsOpen(true);
+  };
+  const { role } = useUserProfile();
   return (
     <div className="rounded-md border">
+      <div className="flex justify-between items-center px-4 py-2">
+        <h2 className="text-xl font-semibold">Leave</h2>
+        <div className="flex gap-5">
+          <DataTableViewOptions table={table} />
+          {role === "admin" ? (
+            <Button onClick={handleAdd}>Add Staff</Button>
+          ) : (
+            ""
+          )}
+        </div>
+      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -84,6 +102,7 @@ export function DataTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
+      <RegisterUserDialog isOpen={isOpen} onOpenChange={setIsOpen} />
     </div>
   );
 }
