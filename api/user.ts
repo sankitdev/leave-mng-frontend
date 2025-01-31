@@ -134,3 +134,12 @@ export async function updateProfile(data: UserData) {
     console.error("Error", error);
   }
 }
+export async function updateUserData(role: string, id: string, data: UserData) {
+  try {
+    const response = await axiosInstance.patch(`/update/${role}/${id}`, data);
+    const [newdata] = response.data;
+    console.log(newdata);
+  } catch (error) {
+    console.error("Error", error);
+  }
+}
