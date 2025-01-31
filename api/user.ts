@@ -3,6 +3,7 @@ import type { useRouter } from "next/navigation";
 import useAuthStore from "@/store/auth.store";
 import { LoginFormInputs, UpdateLeave, UserData } from "@/types/type";
 import { LeaveFormValues } from "@/validation/validation";
+import { toast } from "@/hooks/use-toast";
 
 export async function loginUser(
   userData: LoginFormInputs,
@@ -14,11 +15,20 @@ export async function loginUser(
     if (response.status === 200) {
       const { id, role, name, email, image, department } =
         response.data.userData;
+      toast({
+        title: `Login Successful ${name}`,
+        description: "Have a nice day!!",
+      });
       const { login } = useAuthStore.getState();
       login({ id, role, name, email, image, department });
       router.push("/dashboard");
     }
   } catch (error) {
+    toast({
+      title: `Error: ${error}`,
+      description: "Something Broke",
+      variant: "destructive",
+    });
     console.error("Error:", error);
   }
 }
@@ -75,6 +85,10 @@ export async function logoutUser(router: ReturnType<typeof useRouter>) {
   try {
     const response = await axiosInstance.post("/logout", {});
     if (response.status === 200) {
+      toast({
+        title: `Logout Successful`,
+        description: "Have a nice day!!",
+      });
       const { logout } = useAuthStore.getState();
       logout();
       router.push("/");
@@ -111,8 +125,11 @@ export async function getUsers(role: string) {
 export async function updateProfile(data: UserData) {
   try {
     const response = await axiosInstance.patch("/update-profile", data);
-    console.log(response.data);
-    return response.data;
+    const [newdata] = response.data;
+    if (response.status === 200) {
+      const { login } = useAuthStore.getState();
+      login(newdata);
+    }
   } catch (error) {
     console.error("Error", error);
   }
