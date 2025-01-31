@@ -4,14 +4,14 @@ export interface AuthState {
   name: string | undefined;
   email: string | undefined;
   image: string | undefined;
-  department: string | null;
+  department: "cs" | "mechanical";
   login: (userData: {
     id: string;
     role: string;
     name?: string;
     email?: string;
     image?: string;
-    department?: string;
+    department?: "cs" | "mechanical";
   }) => void;
   logout: () => void;
 }
@@ -22,7 +22,7 @@ export const defaultAuthState: Omit<AuthState, "login" | "logout"> = {
   name: undefined,
   email: undefined,
   image: undefined,
-  department: null,
+  department: "cs",
 };
 export type LoginFormInputs = {
   email: string;

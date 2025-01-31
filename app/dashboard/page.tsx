@@ -39,7 +39,7 @@ export default function OverViewLayout() {
     }
 
     return () => {
-      isMounted = false; // Cleanup to avoid setting state if component unmounts
+      isMounted = false;
     };
   }, [role]);
 
@@ -56,7 +56,7 @@ export default function OverViewLayout() {
         {role === "staff" && <StaffDashboard data={data as Staff} />}
         {role === "hod" && <HodDashboard data={data as Staff} />}
         {role === "admin" && <AdminDashboard data={data as Staff} />}
-        <LeaveTable role={role} />
+        <LeaveTable />
       </div>
     </PageContainer>
   );

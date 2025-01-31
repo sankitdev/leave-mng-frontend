@@ -2,15 +2,15 @@
 import { useEffect, useState } from "react";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
-import { getPersonalLeaveRequests, getAllLeaveRequests } from "@/api/user"; // Import different API functions
-import { LeaveData } from "@/types/type"; // Import Zustand store
-
-export default function LeaveTable({ role }: { role: string | null }) {
+import { getPersonalLeaveRequests, getAllLeaveRequests } from "@/api/user";
+import { LeaveData } from "@/types/type";
+import { useUserProfile } from "@/hooks/useUserProfile";
+export default function LeaveTable() {
   const [leaves, setLeaves] = useState<LeaveData[]>([]);
   const [error, setError] = useState<string | null>(null);
-
+  const { role } = useUserProfile();
   useEffect(() => {
-    let isMounted = true; // Prevents state updates if unmounted
+    let isMounted = true;
 
     const fetchData = async () => {
       try {
@@ -34,7 +34,7 @@ export default function LeaveTable({ role }: { role: string | null }) {
     if (role) fetchData();
 
     return () => {
-      isMounted = false; // Cleanup to prevent state update if unmounted
+      isMounted = false;
     };
   }, [role]);
 
